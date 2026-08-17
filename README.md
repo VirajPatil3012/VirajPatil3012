@@ -46,7 +46,26 @@
 ### 🚀 Featured Projects
 
 <!--START_PROJECTS-->
-<!-- Projects will be generated here automatically by GitHub Actions -->
+<table width="100%">
+<tr>
+
+<td width="50%" valign="top">
+
+### 📦 [Smart Parking System](https://github.com/VirajPatil3012/Smart-Parking-System)
+
+Smart Parking Management System using Spring Boot, React, PostgreSQL, and YOLOv8 with REST APIs for vehicle tracking and parking slot management.
+
+**Languages Used:**  
+`JavaScript (67%)` `Java (24%)` `Python (9%)`
+
+<br/>
+
+[💻 Source Code](https://github.com/VirajPatil3012/Smart-Parking-System)
+
+</td>
+<td width="50%" valign="top"></td>
+</tr>
+</table>
 <!--END_PROJECTS-->
 
 ---
