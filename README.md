@@ -53,6 +53,23 @@
 
 <td width="50%" valign="top">
 
+### 📦 [email writer ai](https://github.com/VirajPatil3012/email-writer-ai)
+
+AI-powered email reply generator with React, Spring Boot, Gemini API, and a Gmail Chrome extension.
+
+**Languages Used:**  
+`JavaScript (53%)` `Java (22%)` `CSS (19%)` `HTML (5%)`
+
+<br/>
+
+[💻 Source Code](https://github.com/VirajPatil3012/email-writer-ai)
+
+[🌐 Live Demo](https://email-writer-ai-eight.vercel.app/)
+
+</td>
+
+<td width="50%" valign="top">
+
 ### 📦 [Smart Parking System](https://github.com/VirajPatil3012/Smart-Parking-System)
 
 Smart Parking Management System using Spring Boot, React, PostgreSQL, and YOLOv8 with REST APIs for vehicle tracking and parking slot management.
@@ -65,7 +82,6 @@ Smart Parking Management System using Spring Boot, React, PostgreSQL, and YOLOv8
 [💻 Source Code](https://github.com/VirajPatil3012/Smart-Parking-System)
 
 </td>
-<td width="50%" valign="top"></td>
 </tr>
 </table>
 <!--END_PROJECTS-->
