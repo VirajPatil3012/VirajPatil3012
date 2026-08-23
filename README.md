@@ -50,68 +50,22 @@
 <!--START_PROJECTS-->
 <table width="100%">
 <tr>
-<td width="50%" valign="top">
-
-### 🤖 [AI Email Writer](https://github.com/VirajPatil3012/email-writer-ai)
-
-AI-powered email writing assistant built with **Java, Spring Boot, React and Google Gemini API**.
-
-The application generates professional email responses through a Spring Boot REST API, with Axios connecting the React frontend to the backend. It is also integrated with a Chrome Extension for browser-based email assistance.
-
-**Tech Stack:**  
-`Java` `Spring Boot` `React` `Gemini API` `REST API` `Axios` `Chrome Extension`
-
-<br/>
-
-[💻 Source Code](https://github.com/VirajPatil3012/email-writer-ai)
-
-</td>
 
 <td width="50%" valign="top">
 
-### 🚗 [Smart Parking System](https://github.com/VirajPatil3012/Smart-Parking-System)
+### 📦 [Smart Parking System](https://github.com/VirajPatil3012/Smart-Parking-System)
 
-Smart parking management system using **Spring Boot, React, PostgreSQL and YOLOv8** for vehicle tracking, parking slot management and number-plate recognition.
+Smart Parking Management System using Spring Boot, React, PostgreSQL, and YOLOv8 with REST APIs for vehicle tracking and parking slot management.
 
-**Tech Stack:**  
-`Java` `Spring Boot` `React` `PostgreSQL` `YOLOv8` `OpenCV` `OCR`
+**Languages Used:**  
+`JavaScript (67%)` `Java (24%)` `Python (9%)`
 
 <br/>
 
 [💻 Source Code](https://github.com/VirajPatil3012/Smart-Parking-System)
 
 </td>
-</tr>
-
-<tr>
-<td width="50%" valign="top">
-
-### 🌐 LocalLingo
-
-Full-stack language learning platform designed to help users learn Marathi through structured lessons, quizzes and personalized learning.
-
-**Tech Stack:**  
-`React` `Node.js` `MongoDB` `Tailwind CSS` `JWT`
-
-<br/>
-
-[📂 GitHub Profile](https://github.com/VirajPatil3012)
-
-</td>
-
-<td width="50%" valign="top">
-
-### 📂 More Projects
-
-Explore my repositories for additional projects involving:
-
-`Java` `Spring Boot` `C++` `DSA` `SQL` `React` `Node.js`
-
-<br/>
-
-[📂 View All Repositories](https://github.com/VirajPatil3012?tab=repositories)
-
-</td>
+<td width="50%" valign="top"></td>
 </tr>
 </table>
 <!--END_PROJECTS-->
