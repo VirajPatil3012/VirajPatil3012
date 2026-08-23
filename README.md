@@ -61,52 +61,40 @@
 ## 🚀 Featured Projects
 
 <!--START_PROJECTS-->
-
 <table width="100%">
 <tr>
 
 <td width="50%" valign="top">
 
-<h3>🤖 AI Email Writer</h3>
+### 📦 [email writer ai](https://github.com/VirajPatil3012/email-writer-ai)
 
-AI-powered email writing assistant built with **Java, Spring Boot, React and Google Gemini API**.
+AI-powered email reply generator with React, Spring Boot, Gemini API, and a Gmail Chrome extension.
 
-The application generates professional email responses through a Spring Boot REST API, with **Axios** connecting the React frontend to the backend.
-
-The project is also integrated with a **Chrome Extension**, allowing users to access the email generation functionality directly from the browser.
-
-**Tech Stack**
-
-`Java` `Spring Boot` `React` `Gemini API` `REST API` `Axios` `Chrome Extension` `Postman`
+**Languages Used:**  
+`JavaScript (53%)` `Java (22%)` `CSS (19%)` `HTML (5%)`
 
 <br/>
 
-<a href="https://github.com/VirajPatil3012/email-writer-ai">
-<img src="https://img.shields.io/badge/💻%20Source%20Code-181717?style=for-the-badge&logo=github&logoColor=white"/>
-</a>
+[💻 Source Code](https://github.com/VirajPatil3012/email-writer-ai)
+
+[🌐 Live Demo](https://email-writer-ai-eight.vercel.app/)
 
 </td>
 
 <td width="50%" valign="top">
 
-<h3>🚗 Smart Parking System</h3>
+### 📦 [Smart Parking System](https://github.com/VirajPatil3012/Smart-Parking-System)
 
-Smart Parking Management System built using **Spring Boot, React, PostgreSQL and YOLOv8**.
+Smart Parking Management System using Spring Boot, React, PostgreSQL, and YOLOv8 with REST APIs for vehicle tracking and parking slot management.
 
-The system handles vehicle management, parking slot allocation, vehicle detection, number-plate recognition, OCR and parking workflows through REST APIs.
-
-**Tech Stack**
-
-`Java` `Spring Boot` `React` `PostgreSQL` `YOLOv8` `OpenCV` `OCR` `REST APIs`
+**Languages Used:**  
+`JavaScript (67%)` `Java (24%)` `Python (9%)`
 
 <br/>
 
-<a href="https://github.com/VirajPatil3012/Smart-Parking-System">
-<img src="https://img.shields.io/badge/💻%20Source%20Code-181717?style=for-the-badge&logo=github&logoColor=white"/>
-</a>
+[💻 Source Code](https://github.com/VirajPatil3012/Smart-Parking-System)
 
 </td>
-
 </tr>
 </table>
 <!--END_PROJECTS-->
