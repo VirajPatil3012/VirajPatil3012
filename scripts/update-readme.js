@@ -5,25 +5,44 @@ const path = require("path");
 const USERNAME = process.env.GITHUB_USERNAME || "VirajPatil3012";
 const TOKEN = process.env.GITHUB_TOKEN;
 
+const FEATURED_ORDER = [
+  "email-writer-ai",
+  "Smart-Parking-System",
+  "LocalLingo"
+];
+
 function fetchGitHub(endpoint) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: "api.github.com",
       path: endpoint,
       headers: {
-        "User-Agent": "NodeJS-Readme-Updater",
-        ...(TOKEN ? { Authorization: `token ${TOKEN}` } : {}),
+        "User-Agent": "VirajPatil-Profile-Updater",
+        "Accept": "application/vnd.github+json",
+        ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
       },
     };
+
     https
       .get(options, (res) => {
         let data = "";
-        res.on("data", (chunk) => (data += chunk));
+
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+
         res.on("end", () => {
           try {
-            resolve(JSON.parse(data));
-          } catch (e) {
-            reject(e);
+            const parsed = JSON.parse(data);
+
+            if (res.statusCode < 200 || res.statusCode >= 300) {
+              reject(new Error(`GitHub API ${res.statusCode}: ${JSON.stringify(parsed)}`));
+              return;
+            }
+
+            resolve(parsed);
+          } catch (error) {
+            reject(error);
           }
         });
       })
@@ -34,54 +53,77 @@ function fetchGitHub(endpoint) {
 async function getLanguages(repoName) {
   try {
     const langs = await fetchGitHub(`/repos/${USERNAME}/${repoName}/languages`);
-    if (!langs || typeof langs !== "object" || Array.isArray(langs)) return [];
-    
-    const total = Object.values(langs).reduce((a, b) => a + b, 0);
-    if (!total) return [];
+
+    if (!langs || typeof langs !== "object" || Array.isArray(langs)) {
+      return [];
+    }
+
+    const total = Object.values(langs).reduce((sum, bytes) => sum + bytes, 0);
+
+    if (!total) {
+      return [];
+    }
 
     return Object.entries(langs)
+      .sort((a, b) => b[1] - a[1])
       .slice(0, 4)
       .map(([lang, bytes]) => `${lang} (${Math.round((bytes / total) * 100)}%)`);
-  } catch {
+  } catch (error) {
+    console.error(`Could not retrieve languages for ${repoName}:`, error.message);
     return [];
   }
 }
 
-async function main() {
-  const repos = await fetchGitHub(`/users/${USERNAME}/repos?per_page=100&sort=pushed`);
-  if (!Array.isArray(repos)) {
-    console.error("Failed to retrieve repositories:", repos);
-    return;
-  }
+function escapeMarkdown(text = "") {
+  return text
+    .replace(/\\/g, "\\\\")
+    .replace(/\|/g, "\\|")
+    .replace(/\r?\n/g, " ");
+}
 
-  // Filter repositories tagged with the topic 'featured'
-  const featured = repos.filter(
-    (r) => Array.isArray(r.topics) && r.topics.includes("featured")
+function getFeaturedRepos(repos) {
+  const featuredMap = new Map(
+    repos
+      .filter(
+        (repo) =>
+          !repo.fork &&
+          Array.isArray(repo.topics) &&
+          repo.topics.includes("featured")
+      )
+      .map((repo) => [repo.name, repo])
   );
 
-  if (featured.length === 0) {
-    console.log("No repositories found with the 'featured' topic.");
-    return;
-  }
+  const ordered = FEATURED_ORDER
+    .map((name) => featuredMap.get(name))
+    .filter(Boolean);
 
-  let tableContent = '<table width="100%">\n<tr>\n';
+  const remaining = repos
+    .filter(
+      (repo) =>
+        !repo.fork &&
+        Array.isArray(repo.topics) &&
+        repo.topics.includes("featured") &&
+        !FEATURED_ORDER.includes(repo.name)
+    )
+    .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
 
-  for (let i = 0; i < featured.length; i++) {
-    const repo = featured[i];
-    const langs = await getLanguages(repo.name);
-    const langBadges = langs.map((l) => `\`${l}\``).join(" ");
-    
-    // Only shows live demo button if a website URL is configured in the repository settings
-    const liveLink = repo.homepage
-      ? ` &nbsp;•&nbsp; [🌐 Live Demo](${repo.homepage})`
-      : "";
+  return [...ordered, ...remaining];
+}
 
-    tableContent += `
+async function buildProjectCard(repo) {
+  const langs = await getLanguages(repo.name);
+  const langBadges = langs.map((lang) => `\`${lang}\``).join(" ");
+
+  const liveLink = repo.homepage
+    ? `\n\n[🌐 Live Demo](${repo.homepage})`
+    : "";
+
+  return `
 <td width="50%" valign="top">
 
-### 📦 [${repo.name.replace(/-/g, " ")}](${repo.html_url})
+### 📦 [${escapeMarkdown(repo.name.replace(/-/g, " "))}](${repo.html_url})
 
-${repo.description || "No description provided."}
+${escapeMarkdown(repo.description || "Project description coming soon.")}
 
 **Languages Used:**  
 ${langBadges || `\`${repo.language || "Multi-language"}\``}
@@ -90,16 +132,42 @@ ${langBadges || `\`${repo.language || "Multi-language"}\``}
 
 [💻 Source Code](${repo.html_url})${liveLink}
 
-</td>\n`;
+</td>`;
+}
 
-    // Break every 2 cards into a new table row
-    if ((i + 1) % 2 === 0 && i + 1 < featured.length) {
+async function main() {
+  const repos = await fetchGitHub(
+    `/users/${USERNAME}/repos?per_page=100&sort=pushed`
+  );
+
+  if (!Array.isArray(repos)) {
+    throw new Error("Failed to retrieve repositories.");
+  }
+
+  const featured = getFeaturedRepos(repos);
+
+  if (featured.length === 0) {
+    console.log("No repositories with the 'featured' topic were found.");
+    return;
+  }
+
+  const cards = [];
+
+  for (const repo of featured) {
+    cards.push(await buildProjectCard(repo));
+  }
+
+  let tableContent = "<table width=\"100%\">\n<tr>\n";
+
+  for (let i = 0; i < cards.length; i++) {
+    tableContent += cards[i] + "\n";
+
+    if ((i + 1) % 2 === 0 && i + 1 < cards.length) {
       tableContent += "</tr>\n<tr>\n";
     }
   }
 
-  // Balance out table if there is an odd number of projects
-  if (featured.length % 2 !== 0) {
+  if (cards.length % 2 !== 0) {
     tableContent += '<td width="50%" valign="top"></td>\n';
   }
 
@@ -109,9 +177,11 @@ ${langBadges || `\`${repo.language || "Multi-language"}\``}
   let readme = fs.readFileSync(readmePath, "utf8");
 
   const regex = /<!--START_PROJECTS-->[\s\S]*?<!--END_PROJECTS-->/;
+
   if (!regex.test(readme)) {
-    console.error("Markers <!--START_PROJECTS--> and <!--END_PROJECTS--> not found in README.md");
-    return;
+    throw new Error(
+      "README.md is missing <!--START_PROJECTS--> and <!--END_PROJECTS--> markers."
+    );
   }
 
   readme = readme.replace(
@@ -119,11 +189,14 @@ ${langBadges || `\`${repo.language || "Multi-language"}\``}
     `<!--START_PROJECTS-->\n${tableContent}\n<!--END_PROJECTS-->`
   );
 
-  fs.writeFileSync(readmePath, readme);
-  console.log("README.md featured projects section updated successfully.");
+  fs.writeFileSync(readmePath, readme, "utf8");
+
+  console.log(
+    `README.md updated successfully with ${featured.length} featured project(s).`
+  );
 }
 
-main().catch((err) => {
-  console.error("Error executing script:", err);
+main().catch((error) => {
+  console.error("Profile updater failed:", error);
   process.exit(1);
 });
